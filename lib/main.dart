@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatelessWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
@@ -39,19 +41,28 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(this.title),
       ),
-      body: Container(
-        color: Colors.red,
-        child: Text('da'),
+      body: Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            width: 100,
+            height: 100,
+            color: Colors.red,
+            child: Text('da'),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: 100,
+            height: 100,
+            color: Color.fromRGBO(255, 0, 0, 1),
+            child: Text('HH'),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
-        onPressed: () {
-
-        },
+        onPressed: () {},
       ),
     );
   }
 }
-
-
-

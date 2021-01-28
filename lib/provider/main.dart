@@ -1,13 +1,20 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'CounterViewModel.dart';
+import 'viewModel/CounterViewModel.dart';
+import 'viewModel/user_view_model.dart';
+import 'model/user_info.dart';
 
 void main() {
-
-  runApp( ChangeNotifierProvider(child: MyApp(),create:(ctx) => CounterViewModel(),));
-
-  // return
+  runApp(
+    MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create:(ctx) => CounterViewModel(),),
+          ChangeNotifierProvider(create:(ctx) => UserViewModel(UserInfo("???","https",1)),)
+    ],
+        child: MyApp(),
+    )
+  );
 }
 
 
@@ -47,19 +54,23 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(this.title),
       ),
-      body:
-      Center(
+      body:Center(
         child:Column(
-          children: [CounterDemo1(),CounterDemo2()],
+          children: [CounterDemo1(),CounterDemo2(),CounterDemo3()],
         ) ,
       ),
-      floatingActionButton: Consumer<CounterViewModel>(builder: (context,  vm,  child){
-      return  FloatingActionButton(child:child,onPressed: (){
-         vm.counter++;
-    },);
+      floatingActionButton: Selector<CounterViewModel,CounterViewModel>(selector: (context,  vm){
+      return  vm;
+     },
+        shouldRebuild:(pre,next)=>false,
+        builder: (ctx,vm,child){
+        return FloatingActionButton(child:child,onPressed: (){
+        vm.counter++;
+        },);
       },
         child: Icon(Icons.add),
       ),
+        //
     );
   }
 }
@@ -70,7 +81,7 @@ class CounterDemo1 extends StatelessWidget {
   Widget build(BuildContext context) {
     int counter = Provider.of <CounterViewModel>(context).counter;
     return Container(
-      color: Colors.red,
+      color: Colors.white,
       child: Text("$counter",style: TextStyle(
           fontSize: 14
       ),),
@@ -82,7 +93,7 @@ class CounterDemo2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.red,
       // child: Consumer<counter>(
         child:Consumer<CounterViewModel>(builder: (ctx, vm, child){
           return  Text("${vm.counter}",style: TextStyle(
@@ -94,3 +105,19 @@ class CounterDemo2 extends StatelessWidget {
   }
 }
 
+
+class CounterDemo3 extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    // int counter = Provider.of <CounterViewModel>(context).counter;
+    return Container(
+        color: Colors.red,
+        child:Consumer<UserViewModel>(builder:(ctx,vm,child){
+      return Text("${vm.info.nickName}",style: TextStyle(
+          fontSize: 30
+      ),);
+    }, ),
+    );
+  }
+}
