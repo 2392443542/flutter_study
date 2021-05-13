@@ -6,17 +6,18 @@ import 'viewModel/user_view_model.dart';
 import 'model/user_info.dart';
 
 void main() {
-  runApp(
-    MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create:(ctx) => CounterViewModel(),),
-          ChangeNotifierProvider(create:(ctx) => UserViewModel(UserInfo("???","https",1)),)
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (ctx) => CounterViewModel(),
+      ),
+      ChangeNotifierProvider(
+        create: (ctx) => UserViewModel(UserInfo("???", "https", 1)),
+      )
     ],
-        child: MyApp(),
-    )
-  );
+    child: MyApp(),
+  ));
 }
-
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -54,37 +55,41 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(this.title),
       ),
-      body:Center(
-        child:Column(
-          children: [CounterDemo1(),CounterDemo2(),CounterDemo3()],
-        ) ,
+      body: Center(
+        child: Column(
+          children: [CounterDemo1(), CounterDemo2(), CounterDemo3()],
+        ),
       ),
-      floatingActionButton: Selector<CounterViewModel,CounterViewModel>(selector: (context,  vm){
-      return  vm;
-     },
-        shouldRebuild:(pre,next)=>false,
-        builder: (ctx,vm,child){
-        return FloatingActionButton(child:child,onPressed: (){
-        vm.counter++;
-        },);
-      },
+      floatingActionButton: Selector<CounterViewModel, CounterViewModel>(
+        selector: (context, vm) {
+          return vm;
+        },
+        shouldRebuild: (pre, next) => false,
+        builder: (ctx, vm, child) {
+          return FloatingActionButton(
+            child: child,
+            onPressed: () {
+              vm.counter++;
+            },
+          );
+        },
         child: Icon(Icons.add),
       ),
-        //
+      //
     );
   }
 }
 
 class CounterDemo1 extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    int counter = Provider.of <CounterViewModel>(context).counter;
+    int counter = Provider.of<CounterViewModel>(context).counter;
     return Container(
       color: Colors.white,
-      child: Text("$counter",style: TextStyle(
-          fontSize: 14
-      ),),
+      child: Text(
+        "$counter",
+        style: TextStyle(fontSize: 14),
+      ),
     );
   }
 }
@@ -93,31 +98,37 @@ class CounterDemo2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
-      // child: Consumer<counter>(
-        child:Consumer<CounterViewModel>(builder: (ctx, vm, child){
-          return  Text("${vm.counter}",style: TextStyle(
-            fontSize: 14,
-          ),);
-        },)
-      // )
-    );
+        color: Colors.red,
+        // child: Consumer<counter>(
+        child: Consumer<CounterViewModel>(
+          builder: (ctx, vm, child) {
+            return Text(
+              "${vm.counter}",
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            );
+          },
+        )
+        // )
+        );
   }
 }
 
-
 class CounterDemo3 extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     // int counter = Provider.of <CounterViewModel>(context).counter;
     return Container(
-        color: Colors.red,
-        child:Consumer<UserViewModel>(builder:(ctx,vm,child){
-      return Text("${vm.info.nickName}",style: TextStyle(
-          fontSize: 30
-      ),);
-    }, ),
+      color: Colors.red,
+      child: Consumer<UserViewModel>(
+        builder: (ctx, vm, child) {
+          return Text(
+            "${vm.info.nickName}",
+            style: TextStyle(fontSize: 30),
+          );
+        },
+      ),
     );
   }
 }
